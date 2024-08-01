@@ -23,14 +23,14 @@ namespace Server.Logic.Logic.Server
         {
             protected override Task HandleTimer(ServerCompAgent agent, Param param)
             {
-                return agent.TestScheduleTimer();
+                return agent.GetOnlineRoleCount();
             }
         }
 
         public override void Active()
         {
             Delay<DelayTimer>(TimeSpan.FromSeconds(3));
-            Schedule<ScheduleTimer>(TimeSpan.FromSeconds(1), TimeSpan.FromSeconds(30));
+            Schedule<ScheduleTimer>(TimeSpan.FromSeconds(1), TimeSpan.FromSeconds(10));
         }
 
 
@@ -73,6 +73,12 @@ namespace Server.Logic.Logic.Server
         {
             LOGGER.Debug("ServerCompAgent.TestSchedueTimer.延时1秒执行.每隔30秒执行");
             return Task.CompletedTask;
+        }
+        
+        private Task GetOnlineRoleCount()
+        {
+            LOGGER.Info("当前在线人数: {OnlineSet}", Comp.OnlineSet.Count);
+            return Task.FromResult(Comp.OnlineSet.Count);
         }
 
         [Service]
