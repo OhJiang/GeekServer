@@ -20,11 +20,11 @@ namespace Geek.Server.App.Common.Session
             return sessionMap.Count;
         }
 
-        public static void Remove(long id)
+        public static void Remove(long sessionId)
         { 
-            if (sessionMap.TryRemove(id, out var _) && ActorMgr.HasActor(id))
+            if (sessionMap.TryRemove(sessionId, out var _) && ActorMgr.HasActor(sessionId))
             {
-                EventDispatcher.Dispatch(id, (int)EventID.SessionRemove);
+                EventDispatcher.Dispatch(sessionId, (int)EventID.SessionRemove);
             }
         }
 
@@ -41,9 +41,9 @@ namespace Geek.Server.App.Common.Session
             return Task.CompletedTask;
         }
 
-        public static Session Get(long id)
+        public static Session Get(long actorId)
         {
-            sessionMap.TryGetValue(id, out Session session);
+            sessionMap.TryGetValue(actorId, out Session session);
             return session;
         }
 
